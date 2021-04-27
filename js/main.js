@@ -54,6 +54,7 @@ function addcertificate() {
     // });
 }
 
+var csvdata=[];
 function readcsv(input) {
     var file = input.files[0];
     var reader = new FileReader();
@@ -62,7 +63,18 @@ function readcsv(input) {
 
     reader.onload = function () {
         var data=reader.result;
-        console.log(data)
+        var ar=[];
+        data=data.replace(/\r/g, "").split(/\n/);
+
+        for(i=0;i<data.length;i++){
+            ar[i]=[];
+            var d=data[i].split(',');
+            for(j=0;j<d.length;j++){
+                ar[i][j]=d[j];
+            }            
+        }        
+        csvdata=ar;
+        console.log(csvdata)
     };
 
     reader.onerror = function () {
