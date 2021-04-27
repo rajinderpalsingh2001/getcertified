@@ -1,5 +1,37 @@
+html,body{
+    overflow-x: hidden !important;
+}
+
 canvas{
-    border: 2px solid black;
-    width: 30% !important;
+    border: 1px solid black;
+}
+
+.lower-canvas {
+    width: 100% !important;
+    height: 100% !important;
+    position: relative !important;
+}
+.upper-canvas {
+    width: 100% !important;
+    height: 100% !important;
+    position: absolute !important;    
+}
+.canvas-container {
+    width: 90% !important;
     height: auto !important;
+    border-radius: 20px;
+    margin:0 auto;
+}
+
+.editor{
+    padding: 10px;
+    min-height: 90vh;
+    background-color: grey;
+}
+
+.editoroptions{
+    border-right: 1px solid grey;
+}
+.btn{
+    border-radius:50px !important;
 }

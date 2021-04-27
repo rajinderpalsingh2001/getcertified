@@ -5,20 +5,87 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="js/fabric.min.js"></script>    
+    <title>Certificate Generator</title>
+
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <script src="js/fabric.min.js"></script>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    
+    <script src="js/popper.min.js"></script>    
+    
 </head>
 
 <body>
-    <button type="button" onclick="download();">Download</button>
-    <button type="button" onclick="addtext('Name');">Name Field</button>
-    <button type="button" onclick="addtext('Date');">Date Field</button>
-    <button type="button" onclick="deleteSelectedObject();">Delete</button>
-    <button type="button" onclick="generateCertificates();">Generate Cer</button>
-   
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">getCertified</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+          </ul>
+          <span class="navbar-text">
+            Navbar text with an inline element
+          </span>
+        </div>
+      </nav>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 editoptions">
+
+            <div class="form-group">
+                <select name="" id="" onmousedown="this.value=''" oninput="addtext(this.value);" class="btn btn-primary">
+                    <option value="">Fields</option>
+                    <option value="Name">Name</option>
+                    <option value="Date">Date</option>
+                    <option value="Certificate ID">Certificate ID</option>
+                </select>
+            </div>
+       
+            <div class="form-group">
+                <label for="certificate">Certificate</label>
+                <input type="file" id='certificate' oninput="addcertificate();" accept="image/*">
+            </div>
+            <div class="form-group">
+                <label for="csvfile">CSV file</label>
+                <input type="file" id='csvfile' oninput="readcsv(this);" accept=".csv">
+            </div>
+            
+
+            <button type="button" onclick="download();">Download</button>
+            <button type="button" onclick="addtext('Name');">Name Field</button>
+            <button type="button" onclick="addtext('Date');">Date Field</button>
+            <button type="button" onclick="deleteSelectedObject();">Delete</button>
+            <button type="button" onclick="generateCertificates();">Generate Cer</button>
+        
+            <div>
+                <label for="setpositions">Set Positions</label>
+                <input type="checkbox" id="setpositions" oninput="setpositions(this.value);">
+            </div>
+        
+        
+            <div class="collapse" id="customformat">
+                <input type="text" id="text">
+            </div>
+        </div>
+        <div class="col-md-9 editor">
+            <div style="width: 100%;text-align:center !important;">
+                <canvas id="canvas"></canvas>        
+            </div>
+            
+        </div>
+    </div>
+
     <!-- <button type="button" onclick="changeText();">Change text</button> -->
-    <canvas id="canvas"></canvas>
+    
+</div>
+    
 
     <!--  -->
     <script src="js/main.js"></script>
