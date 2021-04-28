@@ -38,15 +38,6 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3 editoptions">
-
-            <div class="form-group">
-                <select name="" id="" onmousedown="this.value=''" oninput="addtext(this.value);" class="btn btn-primary">
-                    <option value="">Fields</option>
-                    <option value="Name">Name</option>
-                    <option value="Date">Date</option>
-                    <option value="Certificate ID">Certificate ID</option>
-                </select>
-            </div>
        
             <div class="form-group">
                 <label for="certificate">Certificate</label>
@@ -57,11 +48,12 @@
                 <input type="file" id='csvfile' oninput="readcsv(this);" accept=".csv">
             </div>
             
+            <div class="form-group" id="fields">
+                
+            </div>
 
             <button type="button" onclick="download();">Download</button>
-            <button type="button" onclick="addtext('Name');">Name Field</button>
-            <button type="button" onclick="addtext('Date');">Date Field</button>
-            <button type="button" onclick="deleteSelectedObject();">Delete</button>
+            <!-- <button type="button" onclick="deleteSelectedObject();">Delete</button> -->
             <button type="button" onclick="generateCertificates();">Generate Cer</button>
         
             <div>
@@ -77,15 +69,13 @@
         <div class="col-md-9 editor">
             <div style="width: 100%;text-align:center !important;">
                 <canvas id="canvas"></canvas>        
-            </div>
-            
+            </div>            
         </div>
     </div>
 
     <!-- <button type="button" onclick="changeText();">Change text</button> -->
     
 </div>
-    
 
     <!--  -->
     <script src="js/main.js"></script>
