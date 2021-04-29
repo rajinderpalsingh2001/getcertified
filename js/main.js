@@ -1,6 +1,8 @@
 var canvas = new fabric.Canvas('canvas');
-var objcounter=0;
-var objs=[];
+var objcounter = 0;
+var objs = [];
+var csvdata = [];
+// var imgdata=[];
 
 function addcertificate() {
     var certificate = document.getElementById('certificate');
@@ -55,8 +57,17 @@ function addcertificate() {
     // });
 }
 
-var csvdata = [];
+function deleteallobjects() {
+    var obj = canvas.getObjects();
+    for (i = 0; i < obj.length; i++) {
+        canvas.remove(obj[i]);
+    }
+    objs = [];
+    csvdata = [];
+}
+
 function readcsv(input) {
+    deleteallobjects();
     var file = input.files[0];
     var reader = new FileReader();
 
@@ -75,12 +86,11 @@ function readcsv(input) {
             }
         }
         csvdata = ar;
-
-        // console.log(csvdata)
         displaydatafield(csvdata);
     };
 
     reader.onerror = function () {
+        // console.log("called")
         console.log(reader.error);
     };
 }
@@ -90,43 +100,41 @@ function displaydatafield(csvdata) {
     var headings = csvdata[0];
     var fields = document.getElementById('fields');
     var temp = '<table>';
-    var counter=0;
-    var btnids='',deleteids='';
-    for (i = 0; i < headings.length; i++) {            
-          btnids='btn'+counter;
-          deleteids='deletebtn'+counter;
-          temp+='<tr>'+
-                    '<td><span>'+headings[i]+'</span></td>' +
-                    '<td><button type="button" class="btn btn-success" id="'+btnids+'" onclick=\"addtext(\''+headings[i]+'\'),disablebutton(this.id)\">Add</button></td>' +                    
-                    '<td><button type="button" disabled class="btn btn-danger" id="'+deleteids+'" onclick=\"deletetext(\''+headings[i]+'\'),enablebutton(this.id)\">Delete</button></td>' +
-                '</tr>';
-                counter++;
+    var btnids = '', deleteids = '';
+    for (i = 0; i < headings.length; i++) {
+        btnids = headings[i] + 'btn';
+        deleteids = headings[i] + 'deletebtn';
+        temp += '<tr>' +
+            '<td><span>' + headings[i] + '</span></td>' +
+            '<td><button type="button" class="btn btn-success" id="' + btnids + '" onclick=\"addtext(\'' + headings[i] + '\'),disablebutton(this.id)\">Add</button></td>' +
+            '<td><button type="button" disabled class="btn btn-danger" id="' + deleteids + '" onclick=\"deletetext(\'' + headings[i] + '\'),enablebutton(this.id)\">Delete</button></td>' +
+            '</tr>';
     }
-    temp+='</table>';
-    fields.innerHTML=temp;
+    temp += '</table>';
+    fields.innerHTML = temp;
 }
 
-function disablebutton(btnid){
-    document.getElementById(btnid).disabled=true;
-    document.getElementById('deletebtn'+btnid[btnid.length-1]).disabled=false;
+function disablebutton(btnid) {
+    document.getElementById(btnid).disabled = true;
+    document.getElementById(btnid.slice(0, btnid.length - 3) + 'deletebtn').disabled = false;
 }
-function enablebutton(deleteid){
-    document.getElementById(deleteid).disabled=true;
-    document.getElementById('btn'+deleteid[deleteid.length-1]).disabled=false;
+function enablebutton(deleteid) {
+    document.getElementById(deleteid).disabled = true;
+    document.getElementById(deleteid.slice(0, deleteid.length - 9) + 'btn').disabled = false;
 }
 
-function deletetext(textval){
-    for(i=0;i<objs.length;i++){        
-        if(objs[i].text==textval){
+function deletetext(textval) {
+    for (i = 0; i < objs.length; i++) {
+        if (objs[i].text == textval) {
             selectobject(objs[i].id);
             deleteSelectedObject();
-            objs=canvas.getObjects();
+            objs = canvas.getObjects();
         }
     }
 }
-function selectobject(elid){    
-    for(i=0;i<objs.length;i++){
-        if(objs[i].id==elid){
+function selectobject(elid) {
+    for (i = 0; i < objs.length; i++) {
+        if (objs[i].id == elid) {
             canvas.item(i).set({
                 borderColor: 'black',
                 cornerColor: 'red',
@@ -141,17 +149,6 @@ function deleteSelectedObject() {
     canvas.remove(canvas.getActiveObject());
 }
 
-// window.load = (addcertificate());
-
-// canvas.on('object:moving', function (options) {
-//     // localStorage.setItem("lastname", "Smith");
-//     console.log(options.left);
-// })
-canvas.on('after:render', function (options) {
-    // localStorage.setItem("lastname", "Smith");
-})
-
-
 function addtext(defaulttext) {
     var n = new fabric.Text(defaulttext, {
         fontFamily: 'Delicious_500',
@@ -159,7 +156,7 @@ function addtext(defaulttext) {
         fontSize: 90,
         top: 470,
         left: 500,
-        id:objcounter
+        id: objcounter
     });
     objcounter++;
     // console.log(n.left);
@@ -175,7 +172,7 @@ function addtext(defaulttext) {
         transparentCorners: false
     });
     canvas.setActiveObject(canvas.item(canvas.getObjects().length - 1));
-    objs=canvas.getObjects();
+    objs = canvas.getObjects();
 }
 
 function changeText(newtext) {
@@ -184,46 +181,56 @@ function changeText(newtext) {
     canvas.renderAll();
 }
 
-function download() {
+
+function generateCertificates() {
+    var objids = [];
+    var n = 0;
+    for (var i = 0; i < objs.length; i++) {
+        var obj = { "id": objs[i].id, "value": objs[i].text };
+        objids.push(obj);
+    }
+    var flag = 0;
+    for (o = 1; o < csvdata.length; o++) {
+        flag = 0;
+        for (i = 0; i < objids.length; i++) {
+            for (j = 0; j < csvdata[0].length; j++) {
+                if (objids[i]['value'] == csvdata[0][j]) {
+                    // console.log(objids[i]['value'])
+                    flag = 1;
+                    canvas.setActiveObject(canvas.item(objids[i]['id']));
+                    changeText(csvdata[o][j]);
+                }
+            }
+        }
+        if (flag == 1) {
+            download(n);
+            // imgdata[n]=canvas.toDataURL();
+            n++;
+        }
+    }
+}
+function download(name) {
     var c = document.getElementById('canvas');
 
     canvas.discardActiveObject().renderAll();
 
     var link = document.createElement('a');
-    link.download = 'image.png';
+    link.download = name;
     link.href = c.toDataURL();
     link.click();
+    // tozip();
 }
-
-function generateCertificates() {
-    console.log(csvdata)
-    var objids=[]
-    for(var i=0; i<objs.length; i++){
-        var obj = { "id": objs[i].id, "value": objs[i].text};
-        objids.push(obj);
-    }
-
-    for(i=1;i<csvdata.length;i++){
-        for(j=0;j<csvdata[i].length;j++){
-            
-            console.log(csvdata[0][j])     
-            // console.log(csvdata[i][j])
-        }
-    }
-    
-    
-    // var names = ["Rajinderpal Singh", "Paramjit Kaur", "Navjot Kaur"]
-    // for (var i = 0; i < names.length; i++) {
-    //     canvas.setActiveObject(canvas.item(0));
-    //     changeText(names[i]);
-    //     download();
-    // }
-}
-
-function setpositions() {
-    if (document.querySelector('#setpositions').checked) {
-        console.log("positions set");
-    } else {
-        console.log("positions nt set");
-    }
-}
+// function tozip() {
+//     var zip = new JSZip();
+//     // var img = zip.folder("images");
+//     // img.file("smile.gif", imgData, { base64: true });
+//     for (i of imgdata){
+//         zip.file("name", i, { base64: true });
+//     }
+        
+//     zip.generateAsync({ type: "blob" })
+//         .then(function (content) {
+//             // see FileSaver.js
+//             saveAs(content, "example.zip");
+//         });
+// }
