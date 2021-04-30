@@ -35,13 +35,17 @@ function deleteallobjects() {
     csvdata = [];
 }
 
+var csvfilename='';
 function readcsv(input) {
+
     var l = String(input.value).split('.');
     var extension = l[l.length - 1].toLowerCase();
     if (extension != 'csv') {
         alert("Only CSV files are compatible");
         input.value='';
-    } else {
+    } else {        
+        csvfilename=String(input.value).replace(/.*(\/|\\)/, '');
+        csvfilename=csvfilename.split('.')[0];
         deleteallobjects();
         var file = input.files[0];
         var reader = new FileReader();
@@ -172,6 +176,8 @@ function changeText(newtext) {
 
 
 function generateCertificates() {
+    var zip = new JSZip();
+    var folder = zip.folder('certificates');
     var objids = [];
     var n = 0;
     for (var i = 0; i < objs.length; i++) {
@@ -183,8 +189,7 @@ function generateCertificates() {
         flag = 0;
         for (i = 0; i < objids.length; i++) {
             for (j = 0; j < csvdata[0].length; j++) {
-                if (objids[i]['value'] == csvdata[0][j]) {
-                    // console.log(objids[i]['value'])
+                if (objids[i]['value'] == csvdata[0][j]) {            
                     flag = 1;
                     canvas.setActiveObject(canvas.item(objids[i]['id']));
                     changeText(csvdata[o][j]);
@@ -192,34 +197,20 @@ function generateCertificates() {
             }
         }
         if (flag == 1) {
-            download(n);
-            // imgdata[n]=canvas.toDataURL();
+
+            // add to zip folder
+            var c = document.getElementById('canvas');
+            canvas.discardActiveObject().renderAll();
+            var imgd=c.toDataURL().split(';base64,')[1]
+            folder.file(`${n}.png`, imgd, {base64: true});
             n++;
         }
     }
+
+    // save file
+    zip.generateAsync({ type: "blob" })
+        .then(function (content) {
+            // see FileSaver.js
+            saveAs(content, `${csvfilename}.zip`);
+    });
 }
-function download(name) {
-    var c = document.getElementById('canvas');
-
-    canvas.discardActiveObject().renderAll();
-
-    var link = document.createElement('a');
-    link.download = name;
-    link.href = c.toDataURL();
-    link.click();
-    // tozip();
-}
-// function tozip() {
-//     var zip = new JSZip();
-//     // var img = zip.folder("images");
-//     // img.file("smile.gif", imgData, { base64: true });
-//     for (i of imgdata){
-//         zip.file("name", i, { base64: true });
-//     }
-
-//     zip.generateAsync({ type: "blob" })
-//         .then(function (content) {
-//             // see FileSaver.js
-//             saveAs(content, "example.zip");
-//         });
-// }
