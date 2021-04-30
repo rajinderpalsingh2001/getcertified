@@ -13,69 +13,73 @@
     <script src="js/fabric.min.js"></script>
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    
-    <script src="js/popper.min.js"></script>    
+
+    <script src="js/popper.min.js"></script>
     <script src="js/jszip.min.js"></script>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">getCertified</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
-          </ul>
-          <span class="navbar-text">
-            Navbar text with an inline element
-          </span>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            <span class="navbar-text">
+                Navbar text with an inline element
+            </span>
         </div>
-      </nav>
-<div class="container">
-    <div class="row">
-        <div class="col-md-3 editoptions">
-       
-            <div class="form-group">
-                <label for="certificate">Certificate</label>
-                <input type="file" id='certificate' oninput="addcertificate();" accept="image/*">
-            </div>
-            <div class="form-group">
-                <label for="csvfile">CSV file</label>
-                <input type="file" id='csvfile' oninput="readcsv(this);" accept=".csv">
-            </div>
-            
-            <div class="form-group" id="fields">
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 editoptions">
+
+                <div class="form-group">
+                    <label for="certificate">Certificate</label>
+                    <input type="file" id='certificate' oninput="addcertificate();" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label for="csvfile">CSV file</label>
+                    <input type="file" id='csvfile' oninput="readcsv(this);" accept=".csv">
+                </div>
+
+                <div class="form-group" id="fields">
+
+                </div>
                 
-            </div>
+                <div class="form-group collapse" id="editfield">
+                    <input type="color" oninput="changeFontColor (this.value);">
+                    <select class="btn btn-primary" onchange="changeFontStyle (this.value);">
+                        <option value="Times New Roman" selected="selected">Times New Roman</option>
+                        <option value="Arial">Arial</option>
+                        <option value="fantasy">Fantasy</option>
+                        <option value="cursive">cursive</option>
+                    </select>
+                </div>
 
-            <button type="button" onclick="download();">Download</button>
-            <!-- <button type="button" onclick="deleteSelectedObject();">Delete</button> -->
-            <button type="button" onclick="generateCertificates();">Generate Cer</button>
-        
-            <div>
-                <label for="setpositions">Set Positions</label>
-                <input type="checkbox" id="setpositions" oninput="setpositions(this.value);">
+                <button type="button" class="btn btn-danger" onclick="generateCertificates();">Generate Cer</button>
+
+
+                <div class="collapse" id="customformat">
+                    <input type="text" id="text">
+                </div>
             </div>
-        
-        
-            <div class="collapse" id="customformat">
-                <input type="text" id="text">
+            <div class="col-md-8 editor">
+                <div style="width: 100%;text-align:center !important;">
+                    <canvas id="canvas"></canvas>
+                </div>
             </div>
         </div>
-        <div class="col-md-9 editor">
-            <div style="width: 100%;text-align:center !important;">
-                <canvas id="canvas"></canvas>        
-            </div>            
-        </div>
+
+        <!-- <button type="button" onclick="changeText();">Change text</button> -->
+
     </div>
-
-    <!-- <button type="button" onclick="changeText();">Change text</button> -->
-    
-</div>
 
     <!--  -->
     <script src="js/main.js"></script>
