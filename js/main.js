@@ -2,27 +2,33 @@ var canvas = new fabric.Canvas('canvas');
 var objcounter = 0;
 var objs = [];
 var csvdata = [];
-// var imgdata=[];
+
 
 function addcertificate() {
-    canvas.clear();
-
     var certificate = document.getElementById('certificate');
-    certificate.addEventListener('change', handleImage, false);
+    if (certificate.files.length <= 0) {
+        alert("No Certificate Selected");
+    } else {
 
-    function handleImage(e) {
-        var reader = new FileReader();
-        reader.onload = function (event) {
-            var img = new Image();
-            img.onload = function () {
-                var f_img = new fabric.Image(img);
-                canvas.setBackgroundImage(f_img);
-                canvas.renderAll();
-                canvas.setDimensions({ width: img.width, height: img.height });
-            };
-            img.src = event.target.result;
+        // canvas.clear();
+        // document.getElementById('fields').innerHTML = '';
+
+        certificate.addEventListener('change', handleImage, false);
+
+        function handleImage(e) {
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                var img = new Image();
+                img.onload = function () {
+                    var f_img = new fabric.Image(img);
+                    canvas.setBackgroundImage(f_img);
+                    canvas.renderAll();
+                    canvas.setDimensions({ width: img.width, height: img.height });
+                };
+                img.src = event.target.result;
+            }
+            reader.readAsDataURL(e.target.files[0]);
         }
-        reader.readAsDataURL(e.target.files[0]);
     }
 }
 
@@ -43,6 +49,7 @@ function readcsv(input) {
     if (extension != 'csv') {
         alert("Only CSV files are compatible");
         input.value = '';
+        document.getElementById('fields').innerHTML='';
     } else {
         csvfilename = String(input.value).replace(/.*(\/|\\)/, '');
         csvfilename = csvfilename.split('.')[0];
@@ -207,18 +214,17 @@ function generateCertificates() {
                 folder.file(`${n}.png`, imgd, { base64: true });
                 n++;
             }
-        }        
+        }
         // save file
         zip.generateAsync({ type: "blob" })
             .then(function (content) {
                 // see FileSaver.js
                 saveAs(content, `${csvfilename}.zip`);
-        });
+            });
 
         loader('hide');
-        
-    }, 1000);
 
+    }, 1000);
 
 }
 

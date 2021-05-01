@@ -33,7 +33,6 @@ html,body{
 
 .editor{
     padding: 10px;
-    /* min-height: 50vh; */
     background-color: rgb(35, 37, 35);
     border-radius: 30px;
 }
