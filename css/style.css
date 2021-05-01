@@ -19,6 +19,7 @@ html,body{
     border: 1px solid black;
     width: 80% !important;
     height: auto !important;
+    /* box-shadow: 0 0 20px black; */
     margin:0 auto;
 }
 
@@ -32,6 +33,7 @@ html,body{
 }
 
 .editor{
+    box-shadow: 0 0 20px black inset;
     padding: 10px;
     /* background-color: rgb(35, 37, 35); */
     border-radius: 30px;

@@ -135,7 +135,7 @@ function disablebutton(btnid) {
         document.getElementById('generatecertificatebtn').disabled = true;
     } else {
         document.getElementById('generatecertificatebtn').disabled = false;
-    }
+    }    
     document.getElementById(btnid).disabled = true;
     document.getElementById(btnid.slice(0, btnid.length - 3) + 'deletebtn').disabled = false;
 }
@@ -239,14 +239,13 @@ function generateCertificates() {
             }
         }
         // save file
-
+        
         zip.generateAsync({ type: "blob" })
             .then(function (content) {
                 // see FileSaver.js
                 saveAs(content, `${csvfilename}.zip`);
                 loader('hide');
-            });
-
+            });        
     }, 1000);
 
     setTimeout(function () {
