@@ -239,17 +239,13 @@ function generateCertificates() {
             }
         }
         // save file
-        try {
-            zip.generateAsync({ type: "blob" })
-                .then(function (content) {
-                    // see FileSaver.js
-                    saveAs(content, `${csvfilename}.zip`);
-                    loader('hide');
-                });
-        } catch (e) {
-            loader('hide');
-            alert("Error! While Saving ZIP file");
-        }
+
+        zip.generateAsync({ type: "blob" })
+            .then(function (content) {
+                // see FileSaver.js
+                saveAs(content, `${csvfilename}.zip`);
+                loader('hide');
+            });
 
     }, 1000);
 
