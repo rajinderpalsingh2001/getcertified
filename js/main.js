@@ -3,6 +3,7 @@ var objcounter = 0;
 var objs = [];
 var csvdata = [];
 var flagcertificate = 0;
+var alignvariable="not";
 
 function checkemptycanvas() {
     if (canvas.getObjects().length == 0) {
@@ -49,7 +50,7 @@ function deleteallobjects() {
     csvdata = [];
 }
 
-var csvfilename = '';
+// var csvfilename = '';
 function readcsv(input) {
 
     var l = String(input.value).split('.');
@@ -59,8 +60,8 @@ function readcsv(input) {
         input.value = '';
         document.getElementById('fields').innerHTML = '';
     } else {
-        csvfilename = String(input.value).replace(/.*(\/|\\)/, '');
-        csvfilename = csvfilename.split('.')[0];
+        // csvfilename = String(input.value).replace(/.*(\/|\\)/, '');
+        // csvfilename = csvfilename.split('.')[0];
         deleteallobjects();
         var file = input.files[0];
         var reader = new FileReader();
@@ -71,7 +72,6 @@ function readcsv(input) {
             var data = reader.result;
             var ar = [];
             data = data.replace(/\r/g, "").split(/\n/);
-
             for (i = 0; i < data.length; i++) {
                 ar[i] = [];
                 var d = data[i].split(',');
@@ -135,7 +135,7 @@ function disablebutton(btnid) {
         document.getElementById('generatecertificatebtn').disabled = true;
     } else {
         document.getElementById('generatecertificatebtn').disabled = false;
-    }    
+    }
     document.getElementById(btnid).disabled = true;
     document.getElementById(btnid.slice(0, btnid.length - 3) + 'deletebtn').disabled = false;
 }
@@ -174,6 +174,54 @@ function selectobject(elid) {
 function deleteSelectedObject() {
     canvas.remove(canvas.getActiveObject());
 }
+function alignit() {
+    // var activeObj = canvas.getActiveObject();
+    canvas.getActiveObject().centerH();
+    canvas.getActiveObject().setCoords();
+    canvas.renderAll();
+    // console.log(activeObj)
+    // // activeObj.width=2000;
+    // var centerX=activeObj.getCenterPoint()['x'];
+    // var centerY=activeObj.getCenterPoint()['y'];
+
+    // console.log(eval(String((canvas.width/2)-centerX)))
+
+    // activeObj.set({ width: 2000 });
+    // activeObj.setCoords()
+    // canvas.renderAll()
+    // console.log(canvas.width/2);
+    // console.log(canvas.height);
+}
+function setAlign(align, canvas) {
+    let activeObj = canvas.getActiveObject(),
+        horizontalCenter = (activeObj.width * activeObj.scaleX) / 2,
+        verticalCenter = (activeObj.height * activeObj.scaleY) / 2,
+        { width, height } = canvas
+
+    switch (align) {
+        case 'top':
+            activeObj.set({ top: verticalCenter })
+            break
+        case 'left':
+            activeObj.set({ left: horizontalCenter })
+            break
+        case 'bottom':
+            activeObj.set({ top: height - verticalCenter })
+            break
+        case 'right':
+            activeObj.set({ left: width - horizontalCenter })
+            break
+        case 'center':
+            activeObj.set({ left: (width / 2) })
+            break
+        case 'middle':
+            activeObj.set({ top: (height / 2) })
+            break
+    }
+
+    activeObj.setCoords()
+    canvas.renderAll()
+}
 
 function addtext(defaulttext) {
     var n = new fabric.Text(defaulttext, {
@@ -182,6 +230,7 @@ function addtext(defaulttext) {
         fontSize: 90,
         top: canvas.height / 2,
         left: canvas.width / 2,
+        textAlign: "center",
         id: objcounter
     });
     objcounter++;
@@ -225,6 +274,10 @@ function generateCertificates() {
                         flag = 1;
                         canvas.setActiveObject(canvas.item(objids[i]['id']));
                         changeText(csvdata[o][j]);
+                        if (alignvariable == 'center') {
+                            alignit('center');
+                        }
+                        // setAlign('middle',canvas);
                     }
                 }
             }
@@ -235,17 +288,18 @@ function generateCertificates() {
                 canvas.discardActiveObject().renderAll();
                 var imgd = c.toDataURL().split(';base64,')[1]
                 folder.file(`${n}.png`, imgd, { base64: true });
+                console.log(n + " certificate generated")
                 n++;
             }
         }
         // save file
-        
+
         zip.generateAsync({ type: "blob" })
             .then(function (content) {
                 // see FileSaver.js
-                saveAs(content, `${csvfilename}.zip`);
+                saveAs(content, "getCertified.zip");
                 loader('hide');
-            });        
+            });
     }, 1000);
 
     setTimeout(function () {
@@ -347,5 +401,13 @@ function loader(action) {
             body[0].removeChild(document.getElementById('loader'));
             head[0].removeChild(head[0].lastChild);
             break;
+    }
+}
+
+function setpositions() {
+    if (document.querySelector('#setpositions').checked) {
+        alignvariable="center";
+    } else {
+        alignvariable="not";
     }
 }
