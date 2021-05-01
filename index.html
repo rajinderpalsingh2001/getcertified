@@ -33,7 +33,7 @@
                 </li>
             </ul>
             <span class="navbar-text">
-                <button type="button" class="btn btn-danger" id="generatecertificatebtn" onclick="generateCertificates();">Generate</button>
+                <!-- text right -->
             </span>
         </div>
     </nav>
@@ -71,6 +71,10 @@
             <div class="col-md-8 editor">
                 <div style="width: 100%;text-align:center !important;">
                     <canvas id="canvas"></canvas>
+                </div>            
+
+                <div style="text-align: center;">
+                    <button type="button" class="btn btn-danger" id="generatecertificatebtn" disabled onclick="generateCertificates();">Generate</button>
                 </div>
             </div>
         </div>

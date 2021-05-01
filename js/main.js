@@ -2,7 +2,15 @@ var canvas = new fabric.Canvas('canvas');
 var objcounter = 0;
 var objs = [];
 var csvdata = [];
+var flagcertificate = 0;
 
+function checkemptycanvas() {
+    if (canvas.getObjects().length == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 function addcertificate() {
     var certificate = document.getElementById('certificate');
@@ -49,7 +57,7 @@ function readcsv(input) {
     if (extension != 'csv') {
         alert("Only CSV files are compatible");
         input.value = '';
-        document.getElementById('fields').innerHTML='';
+        document.getElementById('fields').innerHTML = '';
     } else {
         csvfilename = String(input.value).replace(/.*(\/|\\)/, '');
         csvfilename = csvfilename.split('.')[0];
@@ -81,10 +89,15 @@ function readcsv(input) {
     }
 }
 canvas.on('selection:cleared', function (options) {
+
     $('#editfield').fadeOut();
+
+
 })
 canvas.on('selection:created', function (options) {
     $('#editfield').fadeIn();
+
+
 })
 
 function changeFontStyle(fontvalue) {
@@ -118,10 +131,20 @@ function displaydatafield(csvdata) {
 }
 
 function disablebutton(btnid) {
+    if (checkemptycanvas()) {
+        document.getElementById('generatecertificatebtn').disabled = true;
+    } else {
+        document.getElementById('generatecertificatebtn').disabled = false;
+    }    
     document.getElementById(btnid).disabled = true;
     document.getElementById(btnid.slice(0, btnid.length - 3) + 'deletebtn').disabled = false;
 }
 function enablebutton(deleteid) {
+    if (checkemptycanvas()) {
+        document.getElementById('generatecertificatebtn').disabled = true;
+    } else {
+        document.getElementById('generatecertificatebtn').disabled = false;
+    }
     document.getElementById(deleteid).disabled = true;
     document.getElementById(deleteid.slice(0, deleteid.length - 9) + 'btn').disabled = false;
 }
@@ -181,8 +204,8 @@ function changeText(newtext) {
     canvas.renderAll();
 }
 
-
 function generateCertificates() {
+    flagcertificate = 1;
     loader('show');
     setTimeout(function () {
         var zip = new JSZip();
@@ -223,9 +246,11 @@ function generateCertificates() {
             });
 
         loader('hide');
-
     }, 1000);
 
+    setTimeout(function () {
+        flagcertificate = 0;
+    }, 1000);
 }
 
 function loader(action) {
