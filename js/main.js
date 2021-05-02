@@ -5,6 +5,7 @@ var csvdata = [];
 var flagcertificate = 0;
 var alignvariable="not";
 
+
 function checkemptycanvas() {
     if (canvas.getObjects().length == 0) {
         return true;
@@ -68,21 +69,11 @@ function readcsv(input) {
 
         reader.readAsText(file);
 
-        reader.onload = function () {
-            var data = reader.result;
-            var ar = [];
-            data = data.replace(/\r/g, "").split(/\n/);
-            for (i = 0; i < data.length; i++) {
-                ar[i] = [];
-                var d = data[i].split(',');
-                for (j = 0; j < d.length; j++) {
-                    ar[i][j] = d[j];
-                }
-            }
-            csvdata = ar;
+        reader.onload = function () {            
+            csvdata=$.csv.toArrays(reader.result)
             displaydatafield(csvdata);
         };
-
+    
         reader.onerror = function () {
             console.log(reader.error);
         };
@@ -287,7 +278,7 @@ function generateCertificates() {
                 var c = document.getElementById('canvas');
                 canvas.discardActiveObject().renderAll();
                 var imgd = c.toDataURL().split(';base64,')[1]
-                folder.file(`${n}.png`, imgd, { base64: true });
+                folder.file(`${n}.png`, imgd, { base64: true });                
                 console.log(n + " certificate generated")
                 n++;
             }
@@ -393,6 +384,7 @@ function loader(action) {
                 '  <div class="sk-chase-dot"></div>\n' +
                 '  <div class="sk-chase-dot"></div>\n' +
                 '</div>' +
+                '<div style="text-align:center;color:white;" id="certificatenumber"></div>'+
                 '    </div>'
             head[0].appendChild(style);
             body[0].prepend(div);
@@ -411,3 +403,32 @@ function setpositions() {
         alignvariable="not";
     }
 }
+// function sendemail() {
+//     // Email.send({
+//     // Host: "smtp.mailtrap.io",
+//     // Username : "sairish2001",
+//     // Password : "@#12sairish21#@",
+//     // To : 'downinn@gmail.com',
+//     // From : "sairish2001@gmail.com",
+//     // Subject : "Test Email",
+//     // Body : "Waheguru",
+//     // Attachments : [
+//     //     {
+//     //         name : "pic.png",
+//     //         path:"pic.png"
+//     //     }]
+//     // }).then(
+//     //     message => alert("mail sent successfully")
+//     // );
+//     Email.send({
+//         Host : "smtp.gmail.com",
+//         Username : "downinnwh@gmail.com",
+//         Password : "sairish12",
+//         To : 'sairish2001@gmail.com',
+//         From : "downinnwh@gmail.com",
+//         Subject : "This is the subject",
+//         Body : "And this is the body"
+//     }).then(
+//       message => alert(message)
+//     );
+//   }

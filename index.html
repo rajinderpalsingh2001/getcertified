@@ -17,8 +17,8 @@
     <script src="js/popper.min.js"></script>
     <script src="js/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.11/jquery.csv.min.js" integrity="sha512-Y8iWYJDo6HiTo5xtml1g4QqHtl/PO1w+dmUpQfQSOTqKNsMhExfyPN2ncNAe9JuJUSKzwK/b6oaNPop4MXzkwg==" crossorigin="anonymous"></script>
 </head>
-
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">getCertified</a>
@@ -48,6 +48,10 @@
                 <div class="form-group">
                     <label for="csvfile">CSV file</label>
                     <input type="file" id='csvfile' oninput="readcsv(this);" accept=".csv">
+
+                    <form method="post">
+                        <input type="button" value="Send Email" onclick="sendEmail()"/>
+                    </form>  
                 </div>
 
                 <div class="form-group" id="fields">
@@ -83,9 +87,7 @@
                 </div>
             </div>
         </div>
-
         <!-- <button type="button" onclick="changeText();">Change text</button> -->
-
     </div>
 
     <!--  -->
