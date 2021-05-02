@@ -290,6 +290,7 @@ function generateCertificates() {
                 // see FileSaver.js
                 saveAs(content, "getCertified.zip");
                 loader('hide');
+                deleteallobjects();
             });
     }, 1000);
 
