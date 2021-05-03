@@ -7,83 +7,125 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Certificate Generator</title>
 
-    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
-
+    <link rel="stylesheet" href="css/style.css">
     <script src="js/fabric.min.js"></script>
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
 
     <script src="js/popper.min.js"></script>
     <script src="js/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.11/jquery.csv.min.js" integrity="sha512-Y8iWYJDo6HiTo5xtml1g4QqHtl/PO1w+dmUpQfQSOTqKNsMhExfyPN2ncNAe9JuJUSKzwK/b6oaNPop4MXzkwg==" crossorigin="anonymous"></script>
+    <script src="js/FileSaver.js"></script>
+    <script src="js/jquery.csv.min.js"></script>
+
+    <style>
+        /* ------ scroll bar ------ */
+
+        /* width */
+
+        ::-webkit-scrollbar {
+            width: 13px;
+        }
+
+        /* Track */
+
+        ::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 5px grey;
+            border-radius: 10px;
+        }
+
+        /* Handle */
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--apppink);
+            border-radius: 10px;
+        }
+
+        /* Handle on hover */
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--apppink);
+        }
+
+        .hidescroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hidescroll {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">getCertified</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
-            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-            </ul>
-            <span class="navbar-text">
-                <!-- text right -->
-            </span>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="text-center" onclick="document.getElementById('csvfile').click();" id="csvdiv">
+                <i class="fas fa-file-csv"></i>
+                <p id="csvfilename"></p>
+                <input type="file" id='csvfile' style="display: none;" oninput="readcsv(this);" accept=".csv">
+            </div>
+        </div>        
+        
+        <div class="col-sm-4">
+            <div class="text-center" id="generatecertificatebtn" disabled onclick="generateCertificates();">
+                <i class="fa fa-download"></i>
+            </div>
+
         </div>
-    </nav>
-    <div class="container">
+        <div class="col-sm-4">
+            <div class="text-center" onclick="document.getElementById('certificate').click();" id="cerdiv">
+                <i class="fa fa-image"></i>
+                <input type="file" id='certificate' style="display: none;" oninput="addcertificate();" accept="image/*">
+            </div>
+
+        </div>
+        
+    </div>
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-md-4 editoptions">
+            <div class="col-md-4">
+                <div class="editoroptions">
+                    <div class="form-group" id="fields">
 
-                <div class="form-group">
-                    <label for="certificate">Certificate</label>
-                    <input type="file" id='certificate' oninput="addcertificate();" accept="image/*">
-                </div>
-                <div class="form-group">
-                    <label for="csvfile">CSV file</label>
-                    <input type="file" id='csvfile' oninput="readcsv(this);" accept=".csv">
+                    </div>
 
-                    <form method="post">
-                        <input type="button" value="Send Email" onclick="sendEmail()"/>
-                    </form>  
-                </div>
+                    <div class="form-group collapse" id="editfield">
+                        <input type="color" oninput="changeFontColor (this.value);">
+                        <select class="btn btn-primary" onchange="changeFontStyle (this.value);">
+                            <option value="Times New Roman" selected="selected">Times New Roman</option>
+                            <option value="Arial">Arial</option>
+                            <option value="fantasy">Fantasy</option>
+                            <option value="cursive">cursive</option>
+                        </select>
+                    </div>
 
-                <div class="form-group" id="fields">
+                    <div class="collapse" id="customformat">
+                        <input type="text" id="text">
+                    </div>
 
-                </div>
-
-                <div class="form-group collapse" id="editfield">
-                    <input type="color" oninput="changeFontColor (this.value);">
-                    <select class="btn btn-primary" onchange="changeFontStyle (this.value);">
-                        <option value="Times New Roman" selected="selected">Times New Roman</option>
-                        <option value="Arial">Arial</option>
-                        <option value="fantasy">Fantasy</option>
-                        <option value="cursive">cursive</option>
-                    </select>
-                </div>
-            
-                <div class="collapse" id="customformat">
-                    <input type="text" id="text">
-                </div>
-
-                <div>
-                    <label for="setpositions">Center the Text</label>
-                    <input type="checkbox" id="setpositions" oninput="setpositions(this.value);">
+                    <div>
+                        <label for="setpositions">Center the Text</label>
+                        <input type="checkbox" id="setpositions" oninput="setpositions(this.value);">
+                    </div>
                 </div>
             </div>
-            <div class="col-md-8 editor">
-                <div style="width: 100%;text-align:center !important;">
-                    <canvas id="canvas"></canvas>
-                </div>            
+            <div class="col-md-8">
+                <div class="editor">
+                    <div style="width: 100%;text-align:center !important;">
+                        <canvas id="canvas"></canvas>
+                    </div>
+                </div>
+
 
                 <div style="text-align: center;">
-                    <button type="button" class="btn btn-danger" id="generatecertificatebtn" disabled onclick="generateCertificates();">Generate</button>
+
                 </div>
             </div>
         </div>

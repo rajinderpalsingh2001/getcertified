@@ -2,7 +2,6 @@ var canvas = new fabric.Canvas('canvas');
 var objcounter = 0;
 var objs = [];
 var csvdata = [];
-var flagcertificate = 0;
 var alignvariable="not";
 
 
@@ -100,6 +99,10 @@ function changeFontColor(colorvalue) {
     var obj = canvas.getActiveObject();
     obj.set({ fill: colorvalue })
     canvas.renderAll();
+}
+
+function checkemptycanvas(){
+
 }
 
 function displaydatafield(csvdata) {
@@ -245,7 +248,6 @@ function changeText(newtext) {
 }
 
 function generateCertificates() {
-    flagcertificate = 1;
     loader('show');
     setTimeout(function () {
         var zip = new JSZip();
@@ -292,10 +294,6 @@ function generateCertificates() {
                 loader('hide');
                 deleteallobjects();
             });
-    }, 1000);
-
-    setTimeout(function () {
-        flagcertificate = 0;
     }, 1000);
 }
 
@@ -404,32 +402,3 @@ function setpositions() {
         alignvariable="not";
     }
 }
-// function sendemail() {
-//     // Email.send({
-//     // Host: "smtp.mailtrap.io",
-//     // Username : "sairish2001",
-//     // Password : "@#12sairish21#@",
-//     // To : 'downinn@gmail.com',
-//     // From : "sairish2001@gmail.com",
-//     // Subject : "Test Email",
-//     // Body : "Waheguru",
-//     // Attachments : [
-//     //     {
-//     //         name : "pic.png",
-//     //         path:"pic.png"
-//     //     }]
-//     // }).then(
-//     //     message => alert("mail sent successfully")
-//     // );
-//     Email.send({
-//         Host : "smtp.gmail.com",
-//         Username : "downinnwh@gmail.com",
-//         Password : "sairish12",
-//         To : 'sairish2001@gmail.com',
-//         From : "downinnwh@gmail.com",
-//         Subject : "This is the subject",
-//         Body : "And this is the body"
-//     }).then(
-//       message => alert(message)
-//     );
-//   }
