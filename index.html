@@ -65,7 +65,7 @@
 
 <body>
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-4">
             <div class="text-center" onclick="document.getElementById('csvfile').click();" id="csvdiv">
                 <i class="fas fa-file-csv"></i>
                 <p id="csvfilename"></p>
@@ -73,13 +73,13 @@
             </div>
         </div>        
         
-        <div class="col-sm-4">
+        <div class="col-4">
             <div class="text-center" id="generatecertificatebtn" disabled onclick="generateCertificates();">
                 <i class="fa fa-download"></i>
             </div>
 
         </div>
-        <div class="col-sm-4">
+        <div class="col-4">
             <div class="text-center" onclick="document.getElementById('certificate').click();" id="cerdiv">
                 <i class="fa fa-image"></i>
                 <input type="file" id='certificate' style="display: none;" oninput="addcertificate();" accept="image/*">
