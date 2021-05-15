@@ -63,7 +63,7 @@
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 </head>
 
-<body>
+<body onload="fonts();">
     <div class="row">
         <div class="col-4">
             <div class="text-center" onclick="document.getElementById('csvfile').click();" id="csvdiv">
@@ -71,8 +71,8 @@
                 <p id="csvfilename"></p>
                 <input type="file" id='csvfile' style="display: none;" oninput="readcsv(this);" accept=".csv">
             </div>
-        </div>        
-        
+        </div>
+
         <div class="col-4">
             <div class="text-center" id="generatecertificatebtn" disabled onclick="generateCertificates();">
                 <i class="fa fa-download"></i>
@@ -86,7 +86,7 @@
             </div>
 
         </div>
-        
+
     </div>
     <div class="container-fluid">
         <div class="row">
@@ -98,16 +98,18 @@
 
                     <div class="form-group collapse" id="editfield">
                         <input type="color" oninput="changeFontColor (this.value);">
-                        <select class="btn btn-primary" onchange="changeFontStyle (this.value);">
-                            <option value="Times New Roman" selected="selected">Times New Roman</option>
-                            <option value="Arial">Arial</option>
-                            <option value="fantasy">Fantasy</option>
-                            <option value="cursive">cursive</option>
-                        </select>
+
+                        <input type="text" list="fonts" class="btn btn-primary" oninput="changeFontStyle (this.value);">
+                        <datalist id="fonts">
+                            
+                        </datalist>                    
                     </div>
 
                     <div class="collapse" id="customformat">
                         <input type="text" id="text">
+                    </div>
+                    <div>
+                        <button type="button" onclick="viewcsvdata();" class="btn btn-light">View Data</button>
                     </div>
 
                     <div>
@@ -129,9 +131,15 @@
                 </div>
             </div>
         </div>
-        <!-- <button type="button" onclick="changeText();">Change text</button> -->
     </div>
+    <div id="data" style="display: none;">
+        <span
+            onclick="$('#data').removeClass('databackground');document.getElementById('data').style.display='none'">×</span>
 
+        <div class="csvdata">
+
+        </div>
+    </div>
     <!--  -->
     <script src="js/main.js"></script>
 </body>

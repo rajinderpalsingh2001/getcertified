@@ -14,9 +14,7 @@ body {
 .fas,.fa{
     font-size: 30px;
 }
-#csvfilename{
 
-}
 .lower-canvas {
     width: 100% !important;
     height: 100% !important;
@@ -28,14 +26,12 @@ body {
     height: 100% !important;
     position: absolute !important;
 }
-.container-fluid{
-    
-}
+
 .canvas-container {
-    background-image: url('../transparent.jpg');
+
     margin-top: 20px !important;
     margin-bottom: 20px !important;
-    border: 1px solid black;
+    border: 1px solid whitesmoke;
     width: 70% !important;
     height: auto !important;
     /* box-shadow: 0 0 20px black; */
@@ -44,8 +40,8 @@ body {
 
 #fields {
     margin-top: 10px;
-    box-shadow: 0 0 10px black;
-    border-radius: 30px;
+    /* box-shadow: 0 0 10px black; */
+    /* border-radius: 30px; */
     padding: 10px;
     overflow-y: auto;
     height: 200px;
@@ -66,12 +62,8 @@ body {
     height: 50px;
 }
 .editor {
-    margin-top: 10px;
-    box-shadow: 0 0 20px black inset;
+    margin-top: 10px;    
     padding: 10px;
-    /* background-color: rgb(35, 37, 35); */
-    border-radius: 30px;
-    border: 1px solid black;
 }
 
 .editoroptions {
@@ -86,3 +78,31 @@ body {
     border-radius: 50px !important;
 }
 
+.databackground{
+    background-color: var(--appblack);    
+    width: 100%;
+    position: fixed !important;    
+    z-index:10;
+    top:0;    
+}
+.databackground span{
+    margin-top: 2rem;
+    margin-right: 2rem;
+    color:black;
+    background-color: white;
+    position: fixed;
+    right:0;
+    z-index: 90 !important;
+    box-shadow: 0 0 20px black;
+    border-radius: 50%;
+    height: 2rem;
+    width:2rem;
+    font-size: 1.3rem;
+    line-height: 2rem;
+    text-align: center !important;    
+    cursor: pointer;
+}
+.csvdata{
+    height: 100vh;
+    overflow:auto;
+}

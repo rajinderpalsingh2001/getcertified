@@ -2,7 +2,7 @@ var canvas = new fabric.Canvas('canvas');
 var objcounter = 0;
 var objs = [];
 var csvdata = [];
-var alignvariable="not";
+var alignvariable = "not";
 
 
 function checkemptycanvas() {
@@ -68,11 +68,11 @@ function readcsv(input) {
 
         reader.readAsText(file);
 
-        reader.onload = function () {            
-            csvdata=$.csv.toArrays(reader.result)
+        reader.onload = function () {
+            csvdata = $.csv.toArrays(reader.result)
             displaydatafield(csvdata);
         };
-    
+
         reader.onerror = function () {
             console.log(reader.error);
         };
@@ -101,7 +101,7 @@ function changeFontColor(colorvalue) {
     canvas.renderAll();
 }
 
-function checkemptycanvas(){
+function checkemptycanvas() {
 
 }
 
@@ -280,7 +280,7 @@ function generateCertificates() {
                 var c = document.getElementById('canvas');
                 canvas.discardActiveObject().renderAll();
                 var imgd = c.toDataURL().split(';base64,')[1]
-                folder.file(`${n}.png`, imgd, { base64: true });                
+                folder.file(`${n}.png`, imgd, { base64: true });
                 console.log(n + " certificate generated")
                 n++;
             }
@@ -383,7 +383,7 @@ function loader(action) {
                 '  <div class="sk-chase-dot"></div>\n' +
                 '  <div class="sk-chase-dot"></div>\n' +
                 '</div>' +
-                '<div style="text-align:center;color:white;" id="certificatenumber"></div>'+
+                '<div style="text-align:center;color:white;" id="certificatenumber"></div>' +
                 '    </div>'
             head[0].appendChild(style);
             body[0].prepend(div);
@@ -397,8 +397,76 @@ function loader(action) {
 
 function setpositions() {
     if (document.querySelector('#setpositions').checked) {
-        alignvariable="center";
+        alignvariable = "center";
     } else {
-        alignvariable="not";
+        alignvariable = "not";
     }
+}
+
+function viewcsvdata() {
+    if (csvdata.length != 0) {
+        $('#data').addClass('databackground');
+        document.getElementById('data').style.display = "block";
+
+        var output = document.querySelector('.csvdata');
+        var temp = '';
+        temp += '<table class="table bg-light">' +
+            '<thead>' +
+            '<tr>' +
+            `<th scope="col">Serial No. </th>`;
+        for (i = 0; i < csvdata[0].length; i++) {
+            temp += `<th scope="col">${csvdata[0][i]}</th>`;
+        }
+        temp += '</tr>' +
+            '</thead>';
+
+        temp += '<tbody>';
+        for (i = 1; i < csvdata.length; i++) {
+            temp += '<tr>';
+            temp += `<th scope="row">${i}</th>`;
+            for (j = 0; j < csvdata[i].length; j++) {
+                temp += `<td>${csvdata[i][j]}</td>`;
+            }
+            temp += '</tr>'
+        }
+        temp += '</tbody>' +
+            '</table>';
+
+        output.innerHTML = temp;
+    }
+}
+
+function fonts() {
+    fontsarray = [
+        'Abadi MT Condensed Light', 'Aharoni', 'Aharoni Bold', 'Aldhabi', 'AlternateGothic2 BT', 'Andale Mono', 'Andalus', 'Angsana New', 'AngsanaUPC', 'Aparajita', 'Apple Chancery', 'Arabic Typesetting', 'Arial', 'Arial Black', 'Arial narrow', 'Arial Nova', 'Arial Rounded MT Bold', 'Arnoldboecklin', 'Avanta Garde',
+        'Bahnschrift', 'Bahnschrift Light', 'Bahnschrift SemiBold', 'Bahnschrift SemiLight', 'Baskerville', 'Batang', 'BatangChe', 'Big Caslon', 'BIZ UDGothic', 'BIZ UDMincho Medium', 'Blippo', 'Bodoni MT', 'Book Antiqua', 'Bookman', 'Bradley Hand', 'Browallia New', 'BrowalliaUPC', 'Brush Script MT', 'Brush Script Std', 'Brushstroke',
+        'Calibri', 'Calibri Light', 'Calisto MT', 'Cambodian', 'Cambria', 'Cambria Math', 'Candara', 'Century Gothic', 'Chalkduster', 'Cherokee', 'Comic Sans', 'Comic Sans MS', 'Consolas', 'Constantia', 'Copperplate', 'Copperplate Gothic Light', 'Copperplate Gothic Bold', 'Corbel', 'Cordia New', 'CordiaUPC', 'Coronetscript', 'Courier', 'Courier New',
+        'DaunPenh', 'David', 'DengXian', 'DFKai-SB', 'Didot', 'DilleniaUPC', 'DokChampa', 'Dotum', 'DotumChe',
+        'Ebrima', 'Estrangelo Edessa', 'EucrosiaUPC', 'Euphemia',
+        'FangSong', 'Florence', 'Franklin Gothic Medium', 'FrankRuehl', 'FreesiaUPC', 'Futara',
+        'Gabriola', 'Gadugi', 'Garamond', 'Gautami', 'Geneva', 'Georgia', 'Georgia Pro', 'Gill Sans', 'Gill Sans Nova', 'Gisha', 'Goudy Old Style', 'Gulim', 'GulimChe', 'Gungsuh', 'GungsuhChe',
+        'Hebrew', 'Hoefler Text', 'HoloLens MDL2 Assets',
+        'Impact', 'Ink Free', 'IrisUPC', 'Iskoola Pota', 'Japanese', 'JasmineUPC', 'Javanese Text', 'Jazz LET',
+        'KaiTi', 'Kalinga', 'Kartika', 'Khmer UI', 'KodchiangUPC', 'Kokila', 'Korean',
+        'Lao', 'Lao UI', 'Latha', 'Leelawadee', 'Leelawadee UI', 'Leelawadee UI Semilight', 'Levenim MT', 'LilyUPC', 'Lucida Bright', 'Lucida Console', 'Lucida Handwriting', 'Lucida Sans', 'Lucida Sans Typewriter', 'Lucida Sans Unicode', 'Lucidatypewriter', 'Luminari',
+        'Malgun Gothic', 'Malgun Gothic Semilight', 'Mangal', 'Marker Felt', 'Meiryo', 'Meiryo UI', 'Microsoft Himalaya', 'Microsoft JhengHei', 'Microsoft JhengHei UI', 'Microsoft New Tai Lue', 'Microsoft PhagsPa', 'Microsoft Sans Serif', 'Microsoft Tai Le', 'Microsoft Uighur', 'Microsoft YaHei', 'Microsoft YaHei UI', 'Microsoft Yi Baiti', 'MingLiU', 'MingLiU_HKSCS', 'MingLiU_HKSCS-ExtB', 'MingLiU-ExtB', 'Miriam', 'Monaco', 'Mongolian Baiti', 'MoolBoran', 'MS Gothic', 'MS Mincho', 'MS PGothic', 'MS PMincho', 'MS UI Gothic', 'MV Boli', 'Myanmar Text',
+        'Narkisim', 'Neue Haas Grotesk Text Pro', 'New Century Schoolbook', 'News Gothic MT', 'Nirmala UI', 'No automatic language associations', 'Noto', 'NSimSun', 'Nyala',
+        'Oldtown', 'Optima',
+        'Palatino', 'Palatino Linotype', 'papyrus', 'Parkavenue', 'Perpetua', 'Plantagenet Cherokee', 'PMingLiU',
+        'Raavi', 'Rockwell', 'Rockwell Extra Bold', 'Rockwell Nova', 'Rockwell Nova Cond', 'Rockwell Nova Extra Bold', 'Rod',
+        'Sakkal Majalla', 'Sanskrit Text', 'Segoe MDL2 Assets', 'Segoe Print', 'Segoe Script', 'Segoe UI', 'Segoe UI Emoji', 'Segoe UI Historic', 'Segoe UI Symbol', 'Shonar Bangla', 'Shruti', 'SimHei', 'SimKai', 'Simplified Arabic', 'Simplified Chinese', 'SimSun', 'SimSun-ExtB', 'Sitka', 'Snell Roundhan', 'Stencil Std', 'Sylfaen', 'Symbol',
+        'Tahoma', 'Thai', 'Times New Roman', 'Traditional Arabic', 'Traditional Chinese', 'Trattatello', 'Trebuchet MS', 'Tunga',
+        'Utsaah',
+        'Vani', 'Verdana', 'Verdana Pro', 'Vijaya', 'Vrinda',
+        'Yu Gothic', 'Yu Gothic UI', 'Yu Mincho',
+        'Zapf Chancery'
+    ]
+
+    var list = document.getElementById('fonts');
+
+    fontsarray.forEach(function (item) {
+        var option = document.createElement('option');
+        option.value = item;
+        list.appendChild(option);
+    });
 }
